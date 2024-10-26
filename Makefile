@@ -1,19 +1,17 @@
-#
-# Copyright (C) 2019-2021 Xingwang Liao
-#
-# This is free software, licensed under the GNU General Public License v2.
-# See /LICENSE for more information.
-#
-
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=frp
-PKG_VERSION:=0.57.0
+PKG_SOURCE_PROTO:=git
+PKG_SOURCE_URL:=https://github.com/fatedier/frp.git
+PKG_SOURCE_VERSION:=$(shell git ls-remote $(PKG_SOURCE_URL) refs/tags/*|sort -t '/' -k 3 -V|tail -n1|awk '{print $$1}')
+PKG_VERSION:=$(shell echo $(PKG_SOURCE_VERSION)|grep -o 'v[0-9].*'|cut -c2-)
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
+PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
 PKG_SOURCE_URL:=https://codeload.github.com/fatedier/frp/tar.gz/v$(PKG_VERSION)?
-PKG_HASH:=460e3ea0aa18c63f21fd5e31663743dedaed2b2f75772050a7627e8534b5f47d
+# 移除固定的 hash 校验，因为最新版本的 hash 是动态的
+PKG_HASH:=skip
 
 PKG_LICENSE:=Apache-2.0
 PKG_LICENSE_FILES:=LICENSE
